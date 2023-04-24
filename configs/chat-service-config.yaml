@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: chat-service-config
+  namespace: myapp
+data:
+  PORT: "8000"
+  POSTGRES_HOST: chat-db
+  POSTGRES_PORT: "5432"
+  POSTGRES_USER: user
+  POSTGRES_PASSWORD: chat
+  POSTGRES_DB: chat
+  BROKER_HOST: kafka
+  BROKER_PORT: "9092"
+  BROKER_LISTENERS: "PLAINTEXT://kafka:9092,PLAINTEXT_INTERNAL://broker:29092"
+

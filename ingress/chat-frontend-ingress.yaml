@@ -1,0 +1,38 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: chat-frontend
+  namespace: myapp
+spec:
+  rules:
+  - host: "localhost"
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: chat-frontend
+            port:
+              number: 3000
+      - path: /auth
+        pathType: Prefix
+        backend:
+          service:
+            name: auth-service
+            port:
+              number: 8080
+      - path: /api/v1
+        pathType: Prefix
+        backend:
+          service:
+            name: chat-service
+            port:
+              number: 8000
+      - path: /notifications
+        pathType: Prefix
+        backend:
+          service:
+            name: notifications-service
+            port:
+              number: 1232

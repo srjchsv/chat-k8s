@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-db
+  namespace: myapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auth-db
+  template:
+    metadata:
+      labels:
+        app: auth-db
+    spec:
+      containers:
+        - name: auth-db
+          image: postgres:15.2-alpine
+          ports:
+            - containerPort: 5432
+          envFrom:
+            - configMapRef:
+                name: auth-service-config
+          volumeMounts:
+            - name: auth-db-data
+              mountPath: /var/lib/postgresql/dat
+      volumes:
+        - name: auth-db-data
+          persistentVolumeClaim:
+            claimName: auth-db-data
+            
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth-db
+  namespace: myapp
+spec:
+  selector:
+    app: auth-db
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432
+  type: ClusterIP

@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notifications-service
+  namespace: myapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: notifications-service
+  template:
+    metadata:
+      labels:
+        app: notifications-service
+    spec:
+      containers:
+        - name: notifications-service
+          image: srjchsv/notifications-service:latest
+          ports:
+            - containerPort: 1232
+          envFrom:
+            - configMapRef:
+                name: notifications-service-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: notifications-service
+  namespace: myapp
+spec:
+  selector:
+    app: notifications-service
+  ports:
+    - protocol: TCP
+      port: 1232
+      targetPort: 1232
+  type: ClusterIP
