@@ -4,9 +4,9 @@ metadata:
   name: chat-frontend
   namespace: myapp
 spec:
+  ingressClassName: nginx
   rules:
-  - host: "localhost"
-    http:
+  - http:
       paths:
       - path: /
         pathType: Prefix
